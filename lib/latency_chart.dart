@@ -134,7 +134,7 @@ class LatencyChartState extends State<LatencyChart> {
         Row(
           mainAxisSize: MainAxisSize.max,
           children: [
-            Text("Pinging ${_targetAddress ?? "N/A"}"),
+            Text("Pinging ${_targetAddress?.address ?? "N/A"}"),
             Expanded(
               child: Text(
                 _averagePing == null ? "" : "${_averagePing}ms",
