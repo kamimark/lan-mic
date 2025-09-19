@@ -29,7 +29,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   String _deviceName = "N/A";
   int? ping;
-  bool useVoiceProcessing = true;
+  bool useVoiceProcessing = false;
+  bool runInBackground = false;
   String? _version;
 
   Future<bool> requestMicrophonePermission() async {
@@ -180,7 +181,12 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
-    if (state == AppLifecycleState.resumed) checkState(null);
+    if (state == AppLifecycleState.resumed ||
+        state == AppLifecycleState.inactive) {
+      checkState(null);
+    } else if (!runInBackground) {
+      stop();
+    }
   }
 
   Future checkState(_) async {
@@ -251,20 +257,20 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                 ),
               ),
               SwitchListTile(
-                title: _recorder.useTcp
+                title: _recorder.useUdp
                     ? Text(
-                        "TCP",
+                        "UDP",
                         style: Theme.of(context).textTheme.titleMedium,
                       )
                     : Text(
-                        "UDP",
+                        "TCP",
                         style: Theme.of(context).textTheme.titleLarge,
                       ),
                 contentPadding: switchPadding,
-                value: _recorder.useTcp,
+                value: _recorder.useUdp,
                 onChanged: _micState == MicState.disconnected
                     ? (_) =>
-                          setState(() => _recorder.useTcp = !_recorder.useTcp)
+                          setState(() => _recorder.useUdp = !_recorder.useUdp)
                     : null,
               ),
               SwitchListTile(
@@ -284,6 +290,16 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                         () => useVoiceProcessing = !useVoiceProcessing,
                       )
                     : null,
+              ),
+              SwitchListTile(
+                title: Text(
+                  "Run in background",
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                contentPadding: switchPadding,
+                value: runInBackground,
+                onChanged: (_) =>
+                    setState(() => runInBackground = !runInBackground),
               ),
               Padding(
                 padding: EdgeInsetsGeometry.symmetric(vertical: 32),
