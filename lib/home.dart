@@ -4,7 +4,7 @@ import 'package:lan_mic/main.dart';
 import 'package:lan_mic/recorder.dart';
 import 'package:lan_mic/search_discovery.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:record/record.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -23,6 +23,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   final ServerDiscovery _serverDiscovery = ServerDiscovery();
   final Recorder _recorder = Recorder();
+  final _record = AudioRecorder();
 
   MicState? _micState;
   AppError? _appError;
@@ -34,13 +35,9 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   String? _version;
 
   Future<bool> requestMicrophonePermission() async {
-    var status = await Permission.microphone.status;
+    bool hasPermission = await _record.hasPermission();
 
-    if (status.isDenied || status.isRestricted) {
-      status = await Permission.microphone.request();
-    }
-
-    return status.isGranted;
+    return hasPermission;
   }
 
   void toggleConnect() async {
