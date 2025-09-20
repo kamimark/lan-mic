@@ -11,7 +11,7 @@ class Recorder {
   Socket? _socket;
   UDP? _udpSocket;
   bool _connecting = false;
-  bool useUdp = true;
+  bool useTcp = false;
   void Function()? _stop;
 
   Future stopRecorder() async {
@@ -29,7 +29,7 @@ class Recorder {
     void Function() stop,
   ) async {
     _stop = stop;
-    return await (useUdp
+    return await (useTcp
         ? startTcpRecorder(serverDetails, useVoiceProcessing)
         : startUdpRecorder(serverDetails, useVoiceProcessing));
   }

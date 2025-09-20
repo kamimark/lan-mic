@@ -25,8 +25,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   String _deviceName = "N/A";
   int? ping;
-  bool useVoiceProcessing = false;
-  bool runInBackground = false;
+  bool useVoiceProcessing = true;
+  bool runInBackground = true;
   String? _version;
 
   Future<bool> requestMicrophonePermission() async {
@@ -247,23 +247,6 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                     ),
                   ),
                 ),
-              ),
-              SwitchListTile(
-                title: _recorder.useUdp
-                    ? Text(
-                        "UDP",
-                        style: Theme.of(context).textTheme.titleMedium,
-                      )
-                    : Text(
-                        "TCP",
-                        style: Theme.of(context).textTheme.titleLarge,
-                      ),
-                contentPadding: switchPadding,
-                value: _recorder.useUdp,
-                onChanged: _micState == MicState.disconnected
-                    ? (_) =>
-                          setState(() => _recorder.useUdp = !_recorder.useUdp)
-                    : null,
               ),
               SwitchListTile(
                 title: useVoiceProcessing
