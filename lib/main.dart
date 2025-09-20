@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:lan_mic/home.dart';
 import 'package:lan_mic/latency_chart.dart';
 import 'package:device_info_plus/device_info_plus.dart';
-import 'package:package_info_plus/package_info_plus.dart';
 
 void main() async {
   runApp(const MyApp());
